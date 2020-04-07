@@ -13,15 +13,15 @@ const taggedTemplate = (lineEnding, strings, ...values) => {
 };
 
 // Create a tagged template lf`...` that formats text using LF line endings.
-var lf = (strings, ...values) =>
+const lf = (strings, ...values) =>
   taggedTemplate(LineEndings.LF, strings, ...values);
 
 // Create a tagged template cr`...` that formats text using CR line endings.
-var cr = (strings, ...values) =>
+const cr = (strings, ...values) =>
   taggedTemplate(LineEndings.CR, strings, ...values);
 
 // Create a tagged template crlf`...` that formats text using CRLF line endings.
-var crlf = (strings, ...values) =>
+const crlf = (strings, ...values) =>
   taggedTemplate(LineEndings.CRLF, strings, ...values);
 
 const transformLineEnding = (string, lineEnding) => {
