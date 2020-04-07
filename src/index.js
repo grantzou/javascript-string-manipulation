@@ -1,11 +1,28 @@
+const taggedTemplate = (lineEnding, strings, ...values) => {
+  return strings.reduce((result, literal, index) => {
+    const transformedString = transformLineEnding(literal, lineEnding);
+    let transformedValue = values[index] != null ? values[index] : "";
+    if (
+      !Object.getOwnPropertySymbols(transformedValue).includes(disableConverter)
+    ) {
+      transformedValue = transformLineEnding(transformedValue, lineEnding);
+    }
+
+    return `${result}${transformedString}${transformedValue}`;
+  }, "");
+};
+
 // Create a tagged template lf`...` that formats text using LF line endings.
-var lf = () => {};
+var lf = (strings, ...values) =>
+  taggedTemplate(LineEndings.LF, strings, ...values);
 
 // Create a tagged template cr`...` that formats text using CR line endings.
-var cr = () => {};
+var cr = (strings, ...values) =>
+  taggedTemplate(LineEndings.CR, strings, ...values);
 
 // Create a tagged template crlf`...` that formats text using CRLF line endings.
-var crlf = () => {};
+var crlf = (strings, ...values) =>
+  taggedTemplate(LineEndings.CRLF, strings, ...values);
 
 const transformLineEnding = (string, lineEnding) => {
   let { replaceCRLF, replaceLF, replaceCR } = LineEndingReplacements;
@@ -23,6 +40,8 @@ const transformLineEnding = (string, lineEnding) => {
   }
   return string;
 };
+
+const disableConverter = Symbol.for("crlf-converter-disable");
 
 const LineEndings = {
   CR: Symbol("CR"),
@@ -48,6 +67,7 @@ module.exports = {
   lf,
   cr,
   crlf,
+  disableConverter,
   LineEndings,
   transformLineEnding,
 };
